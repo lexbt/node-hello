@@ -1,0 +1,35 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Node-Hello.zip'
+    replaceExistingArchive: true
+- task: Veracode@3
+  inputs:
+    ConnectionDetailsSelection: 'Credentials'
+    apiId: 'f61b8cb3a6f3085b8db89151971bf025'
+    apiKey: '5f9e914a76f8824ff8a23bebaf56b5826cf5f47d54a83573ed1c9afbdb3a5793f05f504b400bf10e816a2c3b8c0c9c343607c7a169afb1505d7fd2351a2eaaf0'
+    veracodeAppProfile: 'Node-Hello'
+    version: '$(build.buildNumber)'
+    filepath: '$(build.artifactstagingdirectory)/Node-Hello.zip'
+    createProfile: true
+    failBuildIfUploadAndScanBuildStepFails: true
+    failBuildOnPolicyFail: true
+    maximumWaitTime: '360'
