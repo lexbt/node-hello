@@ -32,4 +32,6 @@ steps:
     createProfile: true
     failBuildIfUploadAndScanBuildStepFails: true
     failBuildOnPolicyFail: true
+    sandboxName: 'Analisis'
+    createSandBox: true
     maximumWaitTime: '360'
